@@ -20,7 +20,11 @@
 	1. Cree 3 hilos de tipo CountThread, asignándole al primero el intervalo [0..99], al segundo [99..199], y al tercero [200..299].
 	2. Inicie los tres hilos con 'start()'.
 	3. Ejecute y revise la salida por pantalla. 
-	4. Cambie el incio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.
+	4. Cambie el incio con 'start()' por 'run()'. Cómo cambia la salida?, por qué?.  
+	**Respuesta**    
+	Al inicio observamos que al usar start() la salida parecía desordenada, como si no estuviera funcionando correctamente. Sin embargo, al utilizar run(), los resultados se mostraban de manera ordenada y secuencial, lo que hacía más fácil seguir cada conjunto de números.  
+
+	La diferencia radica en que run() ejecuta el código dentro del mismo hilo principal, por lo que las tareas se realizan una tras otra de forma secuencial. En cambio, start() crea hilos independientes que se ejecutan en paralelo.  
 
 **Parte II - Ejercicio Black List Search**
 
