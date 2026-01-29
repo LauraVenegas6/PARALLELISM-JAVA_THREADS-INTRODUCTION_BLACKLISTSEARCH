@@ -77,7 +77,51 @@ A partir de lo anterior, implemente la siguiente secuencia de experimentos para 
 
 Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las pruebas, revise y anote el consumo de CPU y de memoria en cada caso. ![](img/jvisualvm.png)
 
-Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):
+Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):  
+
+Cuando realizamos lo anterior fue en un computador con 8 núcleos de procesamiento, al usar la JvisualVM obtubimos los siguiente resultados:
+
+**Desempeño con 1 hilo:**
+
+<div style="text-align: center;">
+
+![](img/desempeño1Hilo.png)
+
+</div>
+
+**Desempeño con 8 hilos (igual a núcleos):**
+
+<div style="text-align: center;">
+
+![](img/desempeño%208%20hilos.png)
+
+</div>
+
+**Desempeño con 16 hilos (doble de núcleos):**
+
+<div style="text-align: center;">
+
+![](img/desempeño%2016%20hilos.png)
+
+</div>
+
+**Desempeño con 50 hilos:**
+
+<div style="text-align: center;">
+
+![](img/desempeño%2050%20hilos.png)
+
+</div>
+
+**Desempeño con 100 hilos:**
+
+<div style="text-align: center;">
+
+![](img/desempeño%20100%20hilos.png)
+
+</div>  
+
+
 
 **Parte IV - Ejercicio Black List Search**
 
