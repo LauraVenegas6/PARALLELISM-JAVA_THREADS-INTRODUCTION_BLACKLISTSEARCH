@@ -44,9 +44,7 @@ public class HostBlackListsValidator {
             checkedListsCount++;
             
             if (skds.isInBlackListServer(i, ipaddress)){
-                
                 blackListOcurrences.add(i);
-                
                 ocurrencesCount++;
             }
         }
@@ -66,14 +64,11 @@ public class HostBlackListsValidator {
     public List<Integer> checkHost(String ipaddress, int N){
         
         LinkedList<Integer> blackListOcurrences=new LinkedList<>();
-        
         HostBlacklistsDataSourceFacade skds=HostBlacklistsDataSourceFacade.getInstance();
-        
         int totalServers = skds.getRegisteredServersCount();
-        
         int serversPerThread = totalServers / N;
         int remainingServers = totalServers % N;
-        
+        int globalOccurrences = 0;
         BlackListThread[] threads = new BlackListThread[N];
         
         int currentStart = 0;
@@ -81,7 +76,7 @@ public class HostBlackListsValidator {
             int startIndex = currentStart;
             int endIndex = currentStart + serversPerThread + (i < remainingServers ? 1 : 0);
             
-            threads[i] = new BlackListThread(startIndex, endIndex, ipaddress);
+            threads[i] = new BlackListThread(startIndex, endIndex, ipaddress, globalOccurrences);
             threads[i].start();
             
             currentStart = endIndex;
