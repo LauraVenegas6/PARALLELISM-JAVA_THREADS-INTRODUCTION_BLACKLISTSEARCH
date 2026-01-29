@@ -9,6 +9,7 @@ import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
 import edu.eci.arsw.threads.BlackListThread;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,7 +69,7 @@ public class HostBlackListsValidator {
         int totalServers = skds.getRegisteredServersCount();
         int serversPerThread = totalServers / N;
         int remainingServers = totalServers % N;
-        int globalOccurrences = 0;
+        AtomicInteger globalOccurrences = new AtomicInteger(0);
         BlackListThread[] threads = new BlackListThread[N];
         
         int currentStart = 0;

@@ -3,6 +3,7 @@ package edu.eci.arsw.threads;
 import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BlackListThread extends Thread {
     
@@ -12,10 +13,10 @@ public class BlackListThread extends Thread {
     private int occurrencesFound;
     private List<Integer> blackListOccurrences;
     private HostBlacklistsDataSourceFacade skds;
-    private int globalOccurrences;
+    private AtomicInteger globalOccurrences;
     private static final int BLACK_LIST_ALARM_COUNT = 5;
     
-    public BlackListThread(int startIndex, int endIndex, String ipAddress, int globalOccurrences) {
+    public BlackListThread(int startIndex, int endIndex, String ipAddress, AtomicInteger globalOccurrences) {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
         this.ipAddress = ipAddress;
@@ -29,25 +30,31 @@ public class BlackListThread extends Thread {
     public void run() {
         for (int i = startIndex; i < endIndex; i++) {
             
-            if (getGlobalOccurrences() >= BLACK_LIST_ALARM_COUNT) {
+            if (globalOccurrences.get() >= BLACK_LIST_ALARM_COUNT) {
                 break; 
             }
             
             if (skds.isInBlackListServer(i, ipAddress)) {
                 blackListOccurrences.add(i);
                 occurrencesFound++;
-                globalOccurrences++; 
+                globalOccurrences.incrementAndGet(); 
             }
         }
     }
     
-    public int getOccurrencesFound() {return occurrencesFound;}
+    public int getOccurrencesFound() {
+        return occurrencesFound;
+    }
     
-    public List<Integer> getBlackListOccurrences() {return blackListOccurrences;}
+    public List<Integer> getBlackListOccurrences() {
+        return blackListOccurrences;
+    }
     
-    public int getStartIndex() {return startIndex;}
+    public int getStartIndex() {
+        return startIndex;
+    }
     
-    public int getEndIndex() {return endIndex;}
-
-    public int getGlobalOccurrences() {return globalOccurrences;}
+    public int getEndIndex() {
+        return endIndex;
+    }
 }
