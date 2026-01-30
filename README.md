@@ -79,7 +79,7 @@ Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las p
 
 Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):  
 
-Cuando realizamos lo anterior fue en un computador con 8 núcleos de procesamiento, al usar la JvisualVM obtubimos los siguiente resultados:
+Cuando realizamos lo anterior fue en un computador con 8 núcleos de procesamiento, al usar la JvisualVM obtuvimos los siguiente resultados:
 
 **Desempeño con 1 hilo:**
 
@@ -121,19 +121,36 @@ Cuando realizamos lo anterior fue en un computador con 8 núcleos de procesamien
 
 </div>    
 
-Luego realizamos: Parte II.I Para discutir la próxima clase (NO para implementar aún) y estos fueron los resultados obtenidos usando la JvisualVM:
+**GRÁFICA DE RENDIMIENTO**
+
+La siguiente gráfica muestra la relación entre el número de hilos (eje X) y el tiempo de solución en milisegundos (eje Y) para la validación de la IP. Se puede observar claramente cómo el tiempo de ejecución disminuye significativamente al aumentar el número de hilos, alcanzando una aceleración mucho más grande cuando se usan 100 hilos en comparación con un solo hilo.  
+
+<div style="text-align: center;">
+
+![Gráfica de Tiempo vs Número de Hilos](img/Hilos.png)
+
+</div>  
+
+**Hipótesis**  
+
+Con base en los resultados observados, planteamos la siguiente hipótesis: aumentar el número de hilos mejora significativamente el rendimiento hasta cierto punto. Sin embargo, existe un límite más allá del cual agregar más hilos se vuelve contraproducente.
+
+En nuestro caso, observamos que el rendimiento mejora continuamente desde 1 hilo hasta 100 hilos. No obstante, es probable (leyendo los siguientes puntos) que si continuáramos aumentando el número de hilos (por ejemplo, a 500 o 1000), el overhead de creación, administración y cambio de contexto superaría los beneficios del paralelismo, causando una degradación del rendimiento.   
 
 
-
-
-
-Tanto en la parte 1 como en la parte dos podemos observar como la gráfica de Threads cambia drasticamente cuando cambia el número de hilos por lo que podemos verificar que si estan funcionando. Ahora a nivel de rendimiento podemos observar que para la parte 2
 
 **Parte IV - Ejercicio Black List Search**
 
 1. Según la [ley de Amdahls](https://www.pugetsystems.com/labs/articles/Estimating-CPU-Performance-using-Amdahls-Law-619/#WhatisAmdahlsLaw?):
 
-	![](img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?. 
+	![](img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?.  
+
+	**Respuesta:**  
+	El problema de usar 500 hilos es que el overhead asociado al crear, unir y planificar una cantidad tan grande de hilos consume mucho tiempo. Además, el sistema operativo comienza a realizar un excesivo cambio de contexto (intervaling) entre hilos, lo que reduce significativamente el rendimiento. 
+	
+	Según la Ley de Amdahl, la parte secuencial del algoritmo (que no es paralelizable) se convierte en un cuello de botella dominante. A medida que incrementamos el número de hilos, el beneficio marginal disminuye porque la porción secuencial del código limita la aceleración máxima posible, sin importar cuántos hilos agreguemos.
+	
+	Comparando con 200 hilos, el desempeño con 500 hilos es peor debido al mayor overhead de administración de hilos y el aumento del intervaling. Con 200 hilos ya se alcanza un punto donde el costo de gestionar los hilos supera los beneficios de la paralelización. En sistemas con pocos núcleos, usar más de 100 hilos típicamente degrada el rendimiento en lugar de mejorarlo. 
 
 2. Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.
 
