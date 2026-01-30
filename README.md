@@ -154,7 +154,32 @@ En nuestro caso, observamos que el rendimiento mejora continuamente desde 1 hilo
 
 2. Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.
 
+	**Respuesta:**  
+	Según nuestras pruebas con 8 núcleos de procesamiento, observamos una diferencia significativa entre usar 8 hilos y usar 16 hilos (el doble).
+	
+	El rendimiento con 16 hilos es aproximadamente dos veces mejor que con 8 hilos. Esto se debe a que, aunque tenemos solo 8 núcleos físicos, el sistema operativo puede alternar eficientemente entre 16 hilos, aprovechando los tiempos de espera y mejorando la utilización del procesador.
+	
+
+
 3. De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.
+
+	**Respuesta:**
+	
+	Escenario 1: 1 hilo en 100 máquinas
+	
+	Sí, la Ley de Amdahl se aplicaría significativamente mejor en este escenario distribuido. Las razones son:
+	
+	- Eliminación del overhead local: Cada máquina ejecuta solo 1 hilo, eliminando el overhead de context switching que sufríamos con 100 hilos en una sola CPU.
+	- Mejor aplicación de la Ley de Amdahl: La parte paralelizable del algoritmo (búsqueda en listas negras) se distribuye completamente entre máquinas independientes, minimizando la fracción secuencial en cada máquina.
+	- Limitación nueva: El cuello de botella se traslada a la comunicación de red y la sincronización entre máquinas, pero esto es generalmente menos costoso que manejar 100 hilos locales.
+	
+	Escenario 2: N hilos en 100/N máquinas (donde N=8 núcleos)
+	
+	Sí, esto sería óptimo y se mejoraría aún más. Tendríamos:
+	- Cada máquina opera sin overhead excesivo, usa exactamente sus núcleos disponibles.
+	- La escalabilidad distribuida se mantiene mientras se optimiza el rendimiento local
+	
+
 
 
 
