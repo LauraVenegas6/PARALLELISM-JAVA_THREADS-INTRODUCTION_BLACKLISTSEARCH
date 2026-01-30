@@ -12,7 +12,7 @@
 ### Descripción
   Este ejercicio contiene una introducción a la programación con hilos en Java, además de la aplicación a un caso concreto.
   
-
+#### Integrantes: Laura Alejandra Venegas Piraban y Sergio Alejandro Idarraga Torres
 **Parte I - Introducción a Hilos en Java**
 
 1. De acuerdo con lo revisado en las lecturas, complete las clases CountThread, para que las mismas definan el ciclo de vida de un hilo que imprima por pantalla los números entre A y B.
@@ -130,6 +130,8 @@ La siguiente gráfica muestra la relación entre el número de hilos (eje X) y e
 ![Gráfica de Tiempo vs Número de Hilos](img/graficaHilos.png)
 
 </div>  
+
+**Observación de la gráfica:** A primera vista, la distribución de los puntos parece formar una línea casi recta. Esto se debe a que la escala del eje Y (tiempo en milisegundos) es mucho más grande que la del eje X (número de hilos). Esta diferencia de escalas hace que las mejoras de rendimiento, aunque significativas, visualmente parezcan estar alineadas. En realidad, existe una reducción exponencial del tiempo a medida que aumentamos los hilos.
 
 **Hipótesis**  
 
