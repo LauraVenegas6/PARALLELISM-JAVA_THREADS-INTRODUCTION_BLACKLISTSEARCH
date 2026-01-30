@@ -119,9 +119,15 @@ Cuando realizamos lo anterior fue en un computador con 8 núcleos de procesamien
 
 ![](img/desempeño%20100%20hilos.png)
 
-</div>  
+</div>    
+
+Luego realizamos: Parte II.I Para discutir la próxima clase (NO para implementar aún) y estos fueron los resultados obtenidos usando la JvisualVM:
 
 
+
+
+
+Tanto en la parte 1 como en la parte dos podemos observar como la gráfica de Threads cambia drasticamente cuando cambia el número de hilos por lo que podemos verificar que si estan funcionando. Ahora a nivel de rendimiento podemos observar que para la parte 2
 
 **Parte IV - Ejercicio Black List Search**
 
