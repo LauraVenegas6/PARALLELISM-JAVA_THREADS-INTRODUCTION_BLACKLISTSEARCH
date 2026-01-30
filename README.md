@@ -12,7 +12,7 @@
 ### Descripción
   Este ejercicio contiene una introducción a la programación con hilos en Java, además de la aplicación a un caso concreto.
   
-
+#### Integrantes: Laura Alejandra Venegas Piraban y Sergio Alejandro Idarraga Torres
 **Parte I - Introducción a Hilos en Java**
 
 1. De acuerdo con lo revisado en las lecturas, complete las clases CountThread, para que las mismas definan el ciclo de vida de un hilo que imprima por pantalla los números entre A y B.
@@ -77,17 +77,111 @@ A partir de lo anterior, implemente la siguiente secuencia de experimentos para 
 
 Al iniciar el programa ejecute el monitor jVisualVM, y a medida que corran las pruebas, revise y anote el consumo de CPU y de memoria en cada caso. ![](img/jvisualvm.png)
 
-Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):
+Con lo anterior, y con los tiempos de ejecución dados, haga una gráfica de tiempo de solución vs. número de hilos. Analice y plantee hipótesis con su compañero para las siguientes preguntas (puede tener en cuenta lo reportado por jVisualVM):  
+
+Cuando realizamos lo anterior fue en un computador con 8 núcleos de procesamiento, al usar la JvisualVM obtuvimos los siguiente resultados:
+
+**Desempeño con 1 hilo:**
+
+<div style="text-align: center;">
+
+![](img/desempeño1Hilo.png)
+
+</div>
+
+**Desempeño con 8 hilos (igual a núcleos):**
+
+<div style="text-align: center;">
+
+![](img/desempeño%208%20hilos.png)
+
+</div>
+
+**Desempeño con 16 hilos (doble de núcleos):**
+
+<div style="text-align: center;">
+
+![](img/desempeño%2016%20hilos.png)
+
+</div>
+
+**Desempeño con 50 hilos:**
+
+<div style="text-align: center;">
+
+![](img/desempeño%2050%20hilos.png)
+
+</div>
+
+**Desempeño con 100 hilos:**
+
+<div style="text-align: center;">
+
+![](img/desempeño%20100%20hilos.png)
+
+</div>    
+
+**GRÁFICA DE RENDIMIENTO**
+
+La siguiente gráfica muestra la relación entre el número de hilos (eje X) y el tiempo de solución en milisegundos (eje Y) para la validación de la IP. Se puede observar claramente cómo el tiempo de ejecución disminuye significativamente al aumentar el número de hilos, alcanzando una aceleración mucho más grande cuando se usan 100 hilos en comparación con un solo hilo.  
+
+<div style="text-align: center;">
+
+![Gráfica de Tiempo vs Número de Hilos](img/graficaHilos.png)
+
+</div>  
+
+**Observación de la gráfica:** A primera vista, la distribución de los puntos parece formar una línea casi recta. Esto se debe a que la escala del eje Y (tiempo en milisegundos) es mucho más grande que la del eje X (número de hilos). Esta diferencia de escalas hace que las mejoras de rendimiento, aunque significativas, visualmente parezcan estar alineadas. En realidad, existe una reducción exponencial del tiempo a medida que aumentamos los hilos.
+
+**Hipótesis**  
+
+Con base en los resultados observados, planteamos la siguiente hipótesis: aumentar el número de hilos mejora significativamente el rendimiento hasta cierto punto. Sin embargo, existe un límite más allá del cual agregar más hilos se vuelve contraproducente.
+
+En nuestro caso, observamos que el rendimiento mejora continuamente desde 1 hilo hasta 100 hilos. No obstante, es probable (leyendo los siguientes puntos) que si continuáramos aumentando el número de hilos (por ejemplo, a 500 o 1000), el overhead de creación, administración y cambio de contexto superaría los beneficios del paralelismo, causando una degradación del rendimiento.   
+
+
 
 **Parte IV - Ejercicio Black List Search**
 
 1. Según la [ley de Amdahls](https://www.pugetsystems.com/labs/articles/Estimating-CPU-Performance-using-Amdahls-Law-619/#WhatisAmdahlsLaw?):
 
-	![](img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?. 
+	![](img/ahmdahls.png), donde _S(n)_ es el mejoramiento teórico del desempeño, _P_ la fracción paralelizable del algoritmo, y _n_ el número de hilos, a mayor _n_, mayor debería ser dicha mejora. Por qué el mejor desempeño no se logra con los 500 hilos?, cómo se compara este desempeño cuando se usan 200?.  
+
+	**Respuesta:**  
+	El problema de usar 500 hilos es que el overhead asociado al crear, unir y planificar una cantidad tan grande de hilos consume mucho tiempo. Además, el sistema operativo comienza a realizar un excesivo cambio de contexto (intervaling) entre hilos, lo que reduce significativamente el rendimiento. 
+	
+	Según la Ley de Amdahl, la parte secuencial del algoritmo (que no es paralelizable) se convierte en un cuello de botella dominante. A medida que incrementamos el número de hilos, el beneficio marginal disminuye porque la porción secuencial del código limita la aceleración máxima posible, sin importar cuántos hilos agreguemos.
+	
+	Comparando con 200 hilos, el desempeño con 500 hilos es peor debido al mayor overhead de administración de hilos y el aumento del intervaling. Con 200 hilos ya se alcanza un punto donde el costo de gestionar los hilos supera los beneficios de la paralelización. En sistemas con pocos núcleos, usar más de 100 hilos típicamente degrada el rendimiento en lugar de mejorarlo. 
 
 2. Cómo se comporta la solución usando tantos hilos de procesamiento como núcleos comparado con el resultado de usar el doble de éste?.
 
+	**Respuesta:**  
+	Según nuestras pruebas con 8 núcleos de procesamiento, observamos una diferencia significativa entre usar 8 hilos y usar 16 hilos (el doble).
+	
+	El rendimiento con 16 hilos es aproximadamente dos veces mejor que con 8 hilos. Esto se debe a que, aunque tenemos solo 8 núcleos físicos, el sistema operativo puede alternar eficientemente entre 16 hilos, aprovechando los tiempos de espera y mejorando la utilización del procesador.
+	
+
+
 3. De acuerdo con lo anterior, si para este problema en lugar de 100 hilos en una sola CPU se pudiera usar 1 hilo en cada una de 100 máquinas hipotéticas, la ley de Amdahls se aplicaría mejor?. Si en lugar de esto se usaran c hilos en 100/c máquinas distribuidas (siendo c es el número de núcleos de dichas máquinas), se mejoraría?. Explique su respuesta.
+
+	**Respuesta:**
+	
+	Escenario 1: 1 hilo en 100 máquinas
+	
+	Sí, la Ley de Amdahl se aplicaría significativamente mejor en este escenario distribuido. Las razones son:
+	
+	- Eliminación del overhead local: Cada máquina ejecuta solo 1 hilo, eliminando el overhead de context switching que sufríamos con 100 hilos en una sola CPU.
+	- Mejor aplicación de la Ley de Amdahl: La parte paralelizable del algoritmo (búsqueda en listas negras) se distribuye completamente entre máquinas independientes, minimizando la fracción secuencial en cada máquina.
+	- Limitación nueva: El cuello de botella se traslada a la comunicación de red y la sincronización entre máquinas, pero esto es generalmente menos costoso que manejar 100 hilos locales.
+	
+	Escenario 2: N hilos en 100/N máquinas (donde N=8 núcleos)
+	
+	Sí, esto sería óptimo y se mejoraría aún más. Tendríamos:
+	- Cada máquina opera sin overhead excesivo, usa exactamente sus núcleos disponibles.
+	- La escalabilidad distribuida se mantiene mientras se optimiza el rendimiento local
+	
+
 
 
 
