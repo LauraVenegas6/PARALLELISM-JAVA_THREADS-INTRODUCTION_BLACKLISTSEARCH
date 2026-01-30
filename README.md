@@ -127,7 +127,7 @@ La siguiente gráfica muestra la relación entre el número de hilos (eje X) y e
 
 <div style="text-align: center;">
 
-![Gráfica de Tiempo vs Número de Hilos](img/grafica%20HIlos.png)
+![Gráfica de Tiempo vs Número de Hilos](img/graficaHilos.png)
 
 </div>  
 
