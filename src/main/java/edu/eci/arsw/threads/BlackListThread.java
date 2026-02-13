@@ -10,7 +10,7 @@ public class BlackListThread extends Thread {
     private int startIndex;
     private int endIndex;
     private String ipAddress;
-    private int occurrencesFound;
+    private AtomicInteger occurrencesFound;
     private List<Integer> blackListOccurrences;
     private HostBlacklistsDataSourceFacade skds;
     private AtomicInteger globalOccurrences;
@@ -20,7 +20,7 @@ public class BlackListThread extends Thread {
         this.startIndex = startIndex;
         this.endIndex = endIndex;
         this.ipAddress = ipAddress;
-        this.occurrencesFound = 0;
+        this.occurrencesFound = new AtomicInteger(0);
         this.blackListOccurrences = new LinkedList<>();
         this.skds = HostBlacklistsDataSourceFacade.getInstance();
         this.globalOccurrences = globalOccurrences;
@@ -36,14 +36,14 @@ public class BlackListThread extends Thread {
             
             if (skds.isInBlackListServer(i, ipAddress)) {
                 blackListOccurrences.add(i);
-                occurrencesFound++;
+                occurrencesFound.incrementAndGet();
                 globalOccurrences.incrementAndGet(); 
             }
         }
     }
     
     public int getOccurrencesFound() {
-        return occurrencesFound;
+        return occurrencesFound.get();
     }
     
     public List<Integer> getBlackListOccurrences() {
